@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务器登录界面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-content {
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>欢迎来到服务器登录界面</h1>
+    <div class="btn" id="newbieLogin">新人登录</div>
+    <div class="btn" id="advancedLogin">进阶</div>
+    <div class="btn" id="opLogin">OP登录</div>
+    <div class="btn" id="instructionBtn">使用说明书</div>
+
+    <!-- 新人登录弹窗 -->
+    <div class="popup" id="newbiePopup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('newbiePopup')">&times;</span>
+            <p>请跳转到这个页面进行下一步</p>
+            <a href="https://example.com/newbie" target="_blank">https://docs.qq.com/form/page/DWFBQUXF3RXdWaWNI</a>
+        </div>
+    </div>
+
+    <!-- 进阶弹窗 -->
+    <div class="popup" id="advancedPopup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('advancedPopup')">&times;</span>
+            <p>请跳转到这个页面进行进阶试炼</p>
+            <a href="https://example.com/advanced" target="_blank">https://docs.qq.com/form/page/DWGpHaEJzUktkaGFi</a>
+        </div>
+    </div>
+
+    <!-- OP登录弹窗 -->
+    <div class="popup" id="opPopup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('opPopup')">&times;</span>
+            <p>OP需要私信群主拿到Op码之后输入</p>
+            <a href="https://example.com/op" target="_blank">https://docs.qq.com/form/page/DWEF2dXVnZWVyUWFB</a>
+        </div>
+    </div>
+
+    <!-- 使用说明书弹窗 -->
+    <div class="popup" id="instructionPopup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('instructionPopup')">&times;</span>
+            <h2>使用说明书</h2>
+            <p>服务器开启时间</p>
+            <p>开服时间(有时也不一定)</p>
+            <hr>
+            <p>星期一:起床战争:-)</p>
+            <p>星期二:起床战争:D</p>
+            <p>星期三:饥饿战争,建筑:P</p>
+            <p>星期四:休息一下吧:[\</p>
+            <p>星期五:养老，养老，还是养老;[</p>
+            <p>星期六:今天适合无规则服务器:(</p>
+            <p>星期天:管他呢，所有玩法都开了吧;P</p>
+        </div>
+    </div>
+
+    <script>
+        // 新人登录弹窗显示
+        document.getElementById('newbieLogin').addEventListener('click', function () {
+            document.getElementById('newbiePopup').style.display = 'block';
+        });
+
+        // 进阶弹窗显示
+        document.getElementById('advancedLogin').addEventListener('click', function () {
+            document.getElementById('advancedPopup').style.display = 'block';
+        });
+
+        // OP登录弹窗显示
+        document.getElementById('opLogin').addEventListener('click', function () {
+            document.getElementById('opPopup').style.display = 'block';
+        });
+
+        // 使用说明书弹窗显示
+        document.getElementById('instructionBtn').addEventListener('click', function () {
+            document.getElementById('instructionPopup').style.display = 'block';
+        });
+
+        // 关闭弹窗函数
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
