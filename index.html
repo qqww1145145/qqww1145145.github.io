@@ -115,27 +115,22 @@
     </div>
 
     <script>
-        // 新人登录弹窗显示
         document.getElementById('newbieLogin').addEventListener('click', function () {
             document.getElementById('newbiePopup').style.display = 'block';
         });
-
-        // 进阶弹窗显示
+        
         document.getElementById('advancedLogin').addEventListener('click', function () {
             document.getElementById('advancedPopup').style.display = 'block';
         });
 
-        // OP登录弹窗显示
         document.getElementById('opLogin').addEventListener('click', function () {
             document.getElementById('opPopup').style.display = 'block';
         });
 
-        // 使用说明书弹窗显示
         document.getElementById('instructionBtn').addEventListener('click', function () {
             document.getElementById('instructionPopup').style.display = 'block';
         });
-
-        // 关闭弹窗函数
+        
         function closePopup(popupId) {
             document.getElementById(popupId).style.display = 'none';
         }
