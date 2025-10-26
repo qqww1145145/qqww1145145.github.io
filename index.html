@@ -3,154 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XPS服务器介绍页面</title>
-    <style>
-        body {
-            font-family: "微软雅黑", sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
+    <title>黄瑞林个人网站 - 资源下载与视频平台</title>
+    <!-- 引入外部资源（图标+样式） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 自定义配置（主题色+字体） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb', // 主色调（蓝）
+                        secondary: '#f59e0b', // 辅助色（黄，匹配标识）
+                        dark: '#1e293b',
+                        light: '#f8fafc'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
         }
-        h1, h2, h3 { color: #333; }
-        p { line-height: 1.6; color: #666; }
-        a { color: #007bff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .section {
-            margin-bottom: 30px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    </script>
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto { content-visibility: auto; }
+            .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .card-hover { @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1; }
+            .btn-primary { @apply bg-primary text-white px-6 py-3 rounded-lg font-medium transition-all hover:bg-primary/90 hover:shadow-md active:scale-95; }
+            .btn-secondary { @apply bg-secondary text-white px-6 py-3 rounded-lg font-medium transition-all hover:bg-secondary/90 hover:shadow-md active:scale-95; }
         }
-        .nav { margin-bottom: 20px; }
-        .nav a { margin-right: 20px; }
-        .register-container {
-            text-align: center;
-            padding: 50px 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            max-width: 500px;
-            margin: 50px auto;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-        }
-        #registerInput {
-            padding: 8px 12px;
-            width: 250px;
-            margin: 0 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        #registerBtn {
-            padding: 8px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        #registerBtn:hover { background-color: #0056b3; }
-        #userName {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-weight: bold;
-            color: #007bff;
-            display: none;
-        }
-        #content { display: none; }
     </style>
 </head>
-<body>
-    <div id="userName"></div>
-
-    <div id="registerPanel" class="register-container">
-        <h2>请输入名字注册</h2>
-        <input type="text" id="registerInput" placeholder="请输入你的名字">
-        <button id="registerBtn">注册</button>
-    </div>
-
-    <div id="content">
-        <h1>欢迎来到XPS服务器介绍页面</h1>
-        <div class="nav">
-            <a href="#join-us">加入我们</a>
-            <a href="#about-team">关于团队</a>
-            <a href="#about-author">关于作者</a>
-            <a href="#about-us">关于我们</a>
-            <a href="#suggest">摸摸猫头</a>
+<body class="bg-gray-50 text-dark min-h-screen flex flex-col">
+    <!-- 顶部导航栏（固定+响应式） -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- 左上角标识 -->
+            <a href="#" class="flex items-center gap-2">
+                <span class="bg-secondary text-white text-lg font-bold px-3 py-1 rounded">黄瑞林</span>
+                <span class="font-semibold text-lg hidden sm:inline">个人网站</span>
+            </a>
+            
+            <!-- 导航菜单（电脑端） -->
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="#home" class="font-medium hover:text-primary transition-colors">首页</a>
+                <a href="#app-store" class="font-medium hover:text-primary transition-colors">应用商城</a>
+                <a href="#video-section" class="font-medium hover:text-primary transition-colors">视频专区</a>
+                <a href="#upload" class="btn-secondary">上传资源</a>
+            </nav>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="menuBtn" class="md:hidden text-xl">
+                <<i class="bi bi-list"></</i>
+            </button>
         </div>
-
-        <div class="section" id="join-us">
-            <h2>加入我们</h2>
-            <p>最后版本是1.21期待你的到来</p>
-            <p>加入我们的链接：<a href="https://qun.qq.com/universal-share/share?ac=1&authKey=ygvjJbIitdur216usdp0t%2FsLN9kYgbBaKWvYZ6zXL3dWJz9O3VGvIryEEZcJW9AR&busi_data=eyJncm91cENvZGUiOiIxMDM5MTM3NjYwIiwidG9rZW4iOiJLaVlvUEJUQ2txQ2ZsWktGbTBnZTNNR1h0MmZobTgxRjJVNFhZdTgyRW0xc0F0blIyTGVVNm1oYXhvNHNIUWs0IiwidWluIjoiMjA1NTMyOTc4In0%3D&data=Oo_5ORxQ15-XmZCYemsNMB63CcqaoZrYOidcMjZwqFrXOTGJkMzwWt9yU1ssLpSQrQWSqRHL-1C7UUV0c46TiA&svctype=4&tempid=h5_group_info" target="_blank">点击加入服务器交流群</a></p>
-            <p>
-                玩家注册：<a href="https://docs.qq.com/form/page/DWFBQUXF3RXdWaWNI" target="_blank">点击进入</a> | 
-                OP注册：<a href="https://docs.qq.com/form/page/DWEF2dXVnZWVyUWFB" target="_blank">点击进入</a> | 
-                进阶注册：<a href="https://docs.qq.com/form/page/DWHRGalhjbXZRWnVZ" target="_blank">点击进入</a>
-            </p>
+        
+        <!-- 移动端下拉菜单（默认隐藏） -->
+        <div id="mobileMenu" class="md:hidden bg-white shadow-md absolute w-full left-0 top-full transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none">
+            <div class="container mx-auto px-4 py-3 flex flex-col gap-4">
+                <a href="#home" class="font-medium py-2 hover:text-primary transition-colors">首页</a>
+                <a href="#app-store" class="font-medium py-2 hover:text-primary transition-colors">应用商城</a>
+                <a href="#video-section" class="font-medium py-2 hover:text-primary transition-colors">视频专区</a>
+                <a href="#upload" class="btn-secondary text-center">上传资源</a>
+            </div>
         </div>
+    </header>
 
-        <div class="section" id="about-team">
-            <h2>关于团队</h2>
-            <p>团队没有什么啦只是一群无聊的伙伴突然团结在一起!</p>
-        </div>
+    <main class="flex-grow">
+        <!-- 1. 首页英雄区 -->
+        <section id="home" class="relative bg-gradient-to-r from-primary/90 to-primary py-20 md:py-32 overflow-hidden">
+            <!-- 背景装饰 -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-10 left-10 w-40 h-40 rounded-full bg-secondary"></div>
+                <div class="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-secondary"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 relative z-10 text-center">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-white mb-6 text-shadow">
+                    资源共享平台
+                </h1>
+                <p class="text-white/90 text-[clamp(1rem,2vw,1.25rem)] max-w-2xl mx-auto mb-10">
+                    上传、分享、下载各类文件（软件、文档、视频），支持视频在线播放与互动
+                </p>
+                <!-- 中间核心按钮（跳转应用商城） -->
+                <a href="#app-store" class="btn-secondary text-lg px-8 py-4 inline-block">
+                    进入应用商城 <<i class="bi bi-arrow-right ml-2"></</i>
+                </a>
+            </div>
+        </section>
 
-        <div class="section" id="about-author">
-            <h2>关于作者</h2>
-            <p>作者名叫无压力之人!上抖音关注他!现在我命令你快点关注他，别逼我求你😭对了，作者只会在星期天、星期六上线（其他时间别打扰我哟除非我主动发信息）</p>
-        </div>
+        <!-- 2. 应用商城区域 -->
+        <section id="app-store" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+                    <div>
+                        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-2">应用商城</h2>
+                        <p class="text-gray-600">浏览、下载各类软件与文件资源</p>
+                    </div>
+                    <!-- 搜索框 -->
+                    <div class="w-full md:w-auto relative">
+                        <input type="text" placeholder="搜索资源..." 
+                            class="w-full md:w-64 lg:w-80 px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        <<i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></</i>
+                    </div>
+                </div>
 
-        <div class="section" id="about-us">
-            <h2>关于我们</h2>
-            <p>谢谢突然出现在我的世界，而且又突然出手帮助我的人!谢谢你们（超大声）谢谢</p>
-        </div>
+                <!-- 资源分类标签 -->
+                <div class="flex flex-wrap gap-3 mb-10">
+                    <button class="px-4 py-2 bg-primary text-white rounded-full text-sm font-medium">全部</button>
+                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium transition-colors">软件</button>
+                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium transition-colors">文档</button>
+                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium transition-colors">压缩包</button>
+                    <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium transition-colors">其他</button>
+                </div>
 
-        <div class="section" id="suggest">
-            <h2>摸摸猫头</h2>
-            <p>主人，主人!快留下你的意见吧</p>
-            <p>向木茶提出意见：<a href="https://docs.qq.com/form/page/DWHBVV2doc2NFRXdN" target="_blank">点击进入意见反馈表单</a></p>
-        </div>
+                <!-- 资源卡片列表（响应式网格） -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- 卡片1：软件示例 -->
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-sm card-hover">
+                        <div class="h-40 bg-primary/10 flex items-center justify-center">
+                            <<i class="bi bi-pc-display text-5xl text-primary"></</i>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg mb-2">办公软件套件</h3>
+                            <p class="text-gray-600 text-sm mb-3 line-clamp-2">包含文档编辑、表格处理、演示文稿功能，支持多格式导出</p>
+                            <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                                <span><<i class="bi bi-file-earmark-zip mr-1"></</i> 200MB</span>
+                                <span><<i class="bi bi-download mr-1"></</i> 128次</span>
+                            </div>
+                            <button class="w-full bg-primary/10 text-primary py-2 rounded-lg font-medium hover:bg-primary/20 transition-colors">
+                                立即下载
+                            </button>
+                        </div>
+                    </div>
 
-        <h3>作者的碎碎念:</h3>
-        <p>XPS服务器在2025年8月23号突然崛起!</p>
-        <p>崛起的原因竟然是某个闲的无聊的作者开了个服务器，想一起大家玩</p>
-        <p>突然，一群志同道合的伙伴竟然闯进了作者世界</p>
-        <p>所以XPS服务器就这样诞生了</p>
-        <p>一代服务器还不能增加任何模组插件</p>
-        <p>二代就进行了增加模组插件</p>
-        <p>三代更是进行了永久性开放服务器</p>
-        <p>至于四代...可能是人数不够吧</p>
-        <p>所以我需要你来加入我们</p>
-    </div>
+                    <!-- 卡片2：文档示例 -->
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-sm card-hover">
+                        <div class="h-40 bg-secondary/10 flex items-center justify-center">
+                            <<i class="bi bi-file-earmark-text text-5xl text-secondary"></</i>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg mb-2">编程学习手册</h3>
+                            <p class="text-gray-600 text-sm mb-3 line-clamp-2">涵盖Python、JavaScript基础语法，附带实战案例与代码注释</p>
+                            <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                                <span><<i class="bi bi-file-earmark-pdf mr-1"></</i> 50MB</span>
+                                <span><<i class="bi bi-download mr-1"></</i> 89次</span>
+                            </div>
+                            <button class="w-full bg-secondary/10 text-secondary py-2 rounded-lg font-medium hover:bg-secondary/20 transition-colors">
+                                立即下载
+                            </button>
+                        </div>
+                    </div>
 
-    <script>
-        window.onload = function() {
-            const userName = localStorage.getItem('xpsServerUserName');
-            if (userName) {
-                document.getElementById('registerPanel').style.display = 'none';
-                document.getElementById('content').style.display = 'block';
-                const userNameElem = document.getElementById('userName');
-                userNameElem.textContent = `当前用户：${userName}`;
-                userNameElem.style.display = 'block';
-            }
-        };
-
-        document.getElementById('registerBtn').addEventListener('click', function() {
-            const input = document.getElementById('registerInput');
-            const name = input.value.trim();
-            if (name) {
-                localStorage.setItem('xpsServerUserName', name);
-                window.location.reload();
-            } else {
-                alert('请输入有效的名字！');
-            }
-        });
-
-        document.getElementById('registerInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('registerBtn').click();
-            }
-        });
-    </script>
-</body>
-</html>
+                    <!-- 卡片3：压缩包示例 -->
+                    <div class="bg-gray-50 rounded-xl overflow-hidden shadow-sm card-hover">
+                        <div class="h-40 bg-green-500/10 flex items-center justify-center">
+                            <<i class="bi bi-file-zip text-5xl text-green-500"></</i>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg mb-2">设计素材合集</h3>
+                            <p class="text-gray-600 text-sm mb-3 line-clamp-2">包含图标、字体、模板等设计资源，适用于UI/平面设计</p>
+                            <div class="flex justify-between items-center text-sm text-gray-500 mb-4">
+                                <span><<i class="bi bi-file-earmark-zip mr-1"></</i> 1.2GB</span>
+                                <span><<i class="bi bi-download mr-1"></</i> 203次</span>
+                            </div>
+                            <button class="w-full bg-green-500/10 text-green-500 py-2 rounded-lg font-medium hover:bg-green-500/20 transition-colors">
+                                立即下载
+        
