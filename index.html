@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>资源上传下载<黄瑞林出品></title>
+    <title>资源上传下载站</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        /* 基础样式与适配重置 */
         body { min-height: 100vh; font-family: system-ui, sans-serif; }
         .adapt-btn.active { background: #f59e0b; color: white; }
         .resource-item {
@@ -20,16 +20,12 @@
             margin-bottom: 1rem;
             gap: 1rem;
         }
-        .download-btn {
-            white-space: nowrap;
-        }
+        .download-btn { white-space: nowrap; }
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- 顶部栏：适配切换+标题 -->
     <header class="bg-white shadow-sm sticky top-0 z-10">
         <div class="container mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
-            <!-- 适配切换按钮 -->
             <div class="flex gap-2">
                 <button id="mobileAdapt" class="adapt-btn px-4 py-2 rounded-md border font-medium active">手机适配</button>
                 <button id="pcAdapt" class="adapt-btn px-4 py-2 rounded-md border font-medium">电脑适配</button>
@@ -39,106 +35,110 @@
     </header>
 
     <main class="container mx-auto px-4 py-8">
-        <!-- 中间上传按钮 -->
         <div class="text-center mb-12">
             <label for="fileUpload" class="bg-blue-500 text-white px-6 py-3 rounded-lg font-medium cursor-pointer inline-block hover:bg-blue-600 transition-all">
-                <<i class="bi bi-cloud-upload mr-2"></</i>上传资源
+                <<<i class="bi bi-cloud-upload mr-2"></</</i>上传资源
             </label>
             <input type="file" id="fileUpload" class="hidden">
             <p class="text-gray-500 text-sm mt-2">支持任意格式文件</p>
         </div>
 
-        <!-- 资源列表 -->
         <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-5">
             <h2 class="font-bold text-xl mb-5">已上传资源</h2>
             <div id="resourceItems">
-                <!-- 示例资源项 -->
-                <div class="resource-item">
-                    <div class="flex items-center gap-2 flex-1">
-                        <<i class="bi bi-file-earmark-pdf text-gray-500 text-lg"></</i>
-                        <span>示例文档.pdf</span>
-                    </div>
-                    <button class="download-btn bg-yellow-500 text-white px-4 py-2 rounded text-sm hover:bg-yellow-600 transition-all">
-                        <<i class="bi bi-download mr-1"></</i>下载
-                    </button>
-                </div>
+                <!-- 资源会从GitHub仓库加载 -->
             </div>
         </div>
     </main>
 
     <script>
-        // 1. 适配切换功能
+        // 适配切换
         const mobileBtn = document.getElementById('mobileAdapt');
         const pcBtn = document.getElementById('pcAdapt');
         const html = document.documentElement;
-
         mobileBtn.addEventListener('click', () => {
             html.style.fontSize = '14px';
             mobileBtn.classList.add('active');
             pcBtn.classList.remove('active');
         });
-
         pcBtn.addEventListener('click', () => {
             html.style.fontSize = '16px';
             pcBtn.classList.add('active');
             mobileBtn.classList.remove('active');
         });
+        window.innerWidth < 768 ? mobileBtn.click() : pcBtn.click();
 
-        // 初始化默认适配
-        if (window.innerWidth < 768) {
-            mobileBtn.click();
-        } else {
-            pcBtn.click();
+        // 配置：替换为你的GitHub仓库信息
+        const GITHUB_USER = "qqww1145145";
+        const GITHUB_REPO = "qqww1145145";
+        const GITHUB_TOKEN = "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";
+        const RESOURCE_FOLDER = "resources/"; // 仓库中存储资源的文件夹
+
+        // 页面加载时，从GitHub加载已上传资源
+        async function loadResources() {
+            try {
+                const res = await axios.get(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${RESOURCE_FOLDER}`, {
+                    headers: { Authorization: `token ${GITHUB_TOKEN}` }
+                });
+                const resourceItems = document.getElementById('resourceItems');
+                resourceItems.innerHTML = '';
+                res.data.forEach(file => {
+                    if (file.type === 'file') {
+                        const item = document.createElement('div');
+                        item.className = 'resource-item';
+                        // 文件图标
+                        let icon = 'bi-file-earmark';
+                        if (file.name.endsWith('.pdf')) icon = 'bi-file-earmark-pdf';
+                        if (file.name.endsWith('.apk')) icon = 'bi-file-earmark-binary';
+                        if (file.name.endsWith('.zip')) icon = 'bi-file-earmark-zip';
+                        // 下载链接（通过JSDelivr加速）
+                        const downloadUrl = `https://cdn.jsdelivr.net/gh/${GITHUB_USER}/${GITHUB_REPO}@main/${RESOURCE_FOLDER}${file.name}`;
+                        item.innerHTML = `
+                            <div class="flex items-center gap-2 flex-1">
+                                <<<i class="bi ${icon} text-gray-500 text-lg"></</i>
+                                <span>${file.name}</span>
+                            </div>
+                            <a href="${downloadUrl}" download="${file.name}" class="download-btn bg-yellow-500 text-white px-4 py-2 rounded text-sm hover:bg-yellow-600 transition-all">
+                                <<<i class="bi bi-download mr-1"></</i>下载
+                            </a>
+                        `;
+                        resourceItems.appendChild(item);
+                    }
+                });
+            } catch (err) {
+                console.error('加载资源失败：', err);
+            }
         }
 
-        // 2. 上传文件并添加到列表
-        const fileInput = document.getElementById('fileUpload');
-        const resourceItems = document.getElementById('resourceItems');
-
-        fileInput.addEventListener('change', (e) => {
+        // 上传文件到GitHub
+        document.getElementById('fileUpload').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
-            // 生成文件图标（根据后缀）
-            let fileIcon = 'bi-file-earmark';
-            if (file.name.endsWith('.pdf')) fileIcon = 'bi-file-earmark-pdf';
-            if (file.name.endsWith('.apk')) fileIcon = 'bi-file-earmark-binary';
-            if (file.name.endsWith('.zip')) fileIcon = 'bi-file-earmark-zip';
-
-            // 创建资源项
-            const item = document.createElement('div');
-            item.className = 'resource-item';
-            item.innerHTML = `
-                <div class="flex items-center gap-2 flex-1">
-                    <<i class="bi ${fileIcon} text-gray-500 text-lg"></</i>
-                    <span>${file.name}</span>
-                </div>
-                <button class="download-btn bg-yellow-500 text-white px-4 py-2 rounded text-sm hover:bg-yellow-600 transition-all">
-                    <<i class="bi bi-download mr-1"></</i>下载
-                </button>
-            `;
-            resourceItems.appendChild(item);
-
-            // 重置文件选择
-            fileInput.value = '';
+            // 读取文件为Base64
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                const base64Data = event.target.result.split(',')[1]; // 提取Base64内容
+                try {
+                    // 上传到GitHub仓库
+                    await axios.put(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${RESOURCE_FOLDER}${file.name}`, {
+                        message: `Upload ${file.name}`,
+                        content: base64Data
+                    }, {
+                        headers: { Authorization: `token ${GITHUB_TOKEN}` }
+                    });
+                    alert('上传成功！');
+                    loadResources(); // 重新加载资源列表
+                } catch (err) {
+                    console.error('上传失败：', err);
+                    alert('上传失败，请检查配置');
+                }
+            };
+            reader.readAsDataURL(file);
         });
 
-        // 3. 下载按钮点击事件
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.download-btn')) {
-                const resourceItem = e.target.closest('.resource-item');
-                const fileName = resourceItem.querySelector('span').textContent;
-                
-                // 实际项目中，此处替换为后端下载接口（示例）
-                alert(`开始下载：${fileName}\n（实际项目中会触发文件下载）`);
-                
-                // 真实下载逻辑（需后端支持）：
-                // const downloadLink = document.createElement('a');
-                // downloadLink.href = `/api/download?file=${encodeURIComponent(fileName)}`;
-                // downloadLink.download = fileName;
-                // downloadLink.click();
-            }
-        });
+        // 初始化加载资源
+        loadResources();
     </script>
 </body>
 </html>
